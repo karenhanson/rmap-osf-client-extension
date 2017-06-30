@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Johns Hopkins University
+ * Copyright 2017 Johns Hopkins University
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -161,6 +161,11 @@ public abstract class NodeBase {
 
     @Relationship(value = "preprints", resolve = true, relType = RelType.RELATED, strategy = ResolutionStrategy.REF)
     private String preprints;
+
+
+    @Relationship(value = "identifiers", resolve = true, relType = RelType.RELATED, strategy = ResolutionStrategy.OBJECT)
+    @OwlProperty(OwlProperties.OSF_HAS_IDENTIFIER)
+    private List<Identifier> identifiers;
 
     /**
      *
@@ -585,6 +590,22 @@ public abstract class NodeBase {
         this.affiliated_institutions = affiliated_institutions;
     }
 
+    /**
+     *
+     * @return
+     */
+    public List<Identifier> getIdentifiers() {
+        return identifiers;
+    }
+
+    /**
+     *
+     * @param identifiers
+     */
+    public void setIdentifiers(final List<Identifier> identifiers) {
+        this.identifiers = identifiers;
+    }
+    
     /**
      *
      * @return

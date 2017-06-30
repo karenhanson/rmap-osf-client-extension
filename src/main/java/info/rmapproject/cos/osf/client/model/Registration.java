@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Johns Hopkins University
+ * Copyright 2017 Johns Hopkins University
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,11 +103,6 @@ public class Registration extends NodeBase  {
 
     @Relationship(value = "registration_schema", resolve = true, relType = RelType.RELATED, strategy = ResolutionStrategy.REF)
     private String registration_schema;
-
-    @Relationship(value = "identifiers", resolve = true, relType = RelType.RELATED, strategy = ResolutionStrategy.OBJECT)
-    @OwlProperty(OwlProperties.OSF_HAS_IDENTIFIER)
-    private List<Identifier> identifiers;
-
     /**
      *
      * @return
@@ -348,19 +343,4 @@ public class Registration extends NodeBase  {
         this.registration_schema = registration_schema;
     }
 
-    /**
-     *
-     * @return
-     */
-    public List<Identifier> getIdentifiers() {
-        return identifiers;
-    }
-
-    /**
-     *
-     * @param identifiers
-     */
-    public void setIdentifiers(final List<Identifier> identifiers) {
-        this.identifiers = identifiers;
-    }
 }

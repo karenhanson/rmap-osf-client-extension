@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Johns Hopkins University
+ * Copyright 2017 Johns Hopkins University
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,13 @@
 
 package info.rmapproject.cos.osf.client.model;
 
+import org.dataconservancy.cos.osf.client.support.JodaSupport;
+import org.joda.time.DateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
-
-import static org.dataconservancy.cos.osf.client.support.JodaSupport.DATE_TIME_FORMATTER_ALT;
-
-import org.joda.time.DateTime;
-import org.dataconservancy.cos.osf.client.support.JodaSupport;
 
 /**
  * Model exposes User ID only, so that expensive full model call is not necessary
@@ -86,11 +84,8 @@ public class LightUser {
      *
      * @return
      */
-    public String getDate_registered() {
-        if (date_registered != null) {
-            return date_registered.toString(DATE_TIME_FORMATTER_ALT);
-        }
-        return null;
+    public DateTime getDate_registered() {
+        return date_registered;
     }
 
     /**

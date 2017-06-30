@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Johns Hopkins University
+ * Copyright 2017 Johns Hopkins University
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,22 @@
 
 package info.rmapproject.cos.osf.client.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.jasminb.jsonapi.annotations.Id;
-import com.github.jasminb.jsonapi.annotations.Type;
-
-import static org.dataconservancy.cos.osf.client.support.JodaSupport.DATE_TIME_FORMATTER_ALT;
-
-import org.joda.time.DateTime;
 import org.dataconservancy.cos.osf.client.support.JodaSupport;
+import org.dataconservancy.cos.osf.client.support.UrlToIdTransform;
+import org.dataconservancy.cos.rdf.annotations.OwlProperty;
+import org.dataconservancy.cos.rdf.support.OwlProperties;
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.jasminb.jsonapi.RelType;
+import com.github.jasminb.jsonapi.ResolutionStrategy;
+import com.github.jasminb.jsonapi.annotations.Id;
+import com.github.jasminb.jsonapi.annotations.Relationship;
+import com.github.jasminb.jsonapi.annotations.Type;
 
 /**
  * Model exposes Node ID and pagination links only, so that expensive full model call is not necessary
+ * includes parent since having accessible parent is exclusion criteria
  *
  * @author khanson
  */
@@ -42,11 +46,6 @@ public class LightNode {
     private String id;
 
     /**
-     * pagination links, applies when list is returned
-     */
-    private PageLinks pageLinks;
-
-    /**
      * timestamp that the node was created
      */
     private DateTime date_created;
@@ -56,6 +55,12 @@ public class LightNode {
      */
     private DateTime date_modified;
 
+    /**If this node is a child node of another node, the parent's canonical endpoint will
+     * be available in the /parent/links/related/href key. Otherwise, it will be null.*/
+    @Relationship(value = "parent", resolve = true, relType = RelType.RELATED, strategy = ResolutionStrategy.REF)
+    @OwlProperty(value = OwlProperties.OSF_HAS_PARENT, transform = UrlToIdTransform.class)
+    private String parent;
+    
     /**
      * @return
      */
@@ -73,26 +78,8 @@ public class LightNode {
     /**
      * @return
      */
-    public PageLinks getPageLinks() {
-        return pageLinks;
-    }
-
-    /**
-     * @param pageLinks
-     */
-    @JsonProperty("links")
-    public void setPageLinks(final PageLinks pageLinks) {
-        this.pageLinks = pageLinks;
-    }
-
-    /**
-     * @return
-     */
-    public String getDate_created() {
-        if (this.date_created != null) {
-            return this.date_created.toString(DATE_TIME_FORMATTER_ALT);
-        }
-        return null;
+    public DateTime getDate_created() {
+        return date_created;
     }
 
     /**
@@ -107,11 +94,8 @@ public class LightNode {
     /**
      * @return
      */
-    public String getDate_modified() {
-        if (this.date_modified != null) {
-            return this.date_modified.toString(DATE_TIME_FORMATTER_ALT);
-        }
-        return null;
+    public DateTime getDate_modified() {
+        return date_modified;
     }
 
     /**
@@ -121,5 +105,21 @@ public class LightNode {
         if (date_modified != null) {
             this.date_modified = JodaSupport.parseDateTime(date_modified);
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getParent() {
+        return parent;
+    }
+
+    /**
+     *
+     * @param parent
+     */
+    public void setParent(final String parent) {
+        this.parent = parent;
     }
 }
