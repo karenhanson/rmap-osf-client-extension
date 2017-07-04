@@ -65,6 +65,14 @@ public interface OsfService {
 
     /**
      *
+     * @param nodeId
+     * @return
+     */
+    @GET("nodes/{id}/")
+    Call<LightNode> getLightNodeById(@Path("id") String nodeId);
+    
+    /**
+     *
      * @param params
      * @return
      */
@@ -79,6 +87,14 @@ public interface OsfService {
     @GET("registrations/{id}/")
     Call<Registration> getRegistrationById(@Path("id") String id);
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @GET("registrations/{id}/")
+    Call<LightRegistration> getLightRegistrationById(@Path("id") String id);
+    
     /**
      *
      * @param params
